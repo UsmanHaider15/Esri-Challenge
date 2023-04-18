@@ -5,9 +5,22 @@ import android.os.Bundle
 import androidx.databinding.DataBindingUtil
 import com.arcgismaps.ApiKey
 import com.arcgismaps.ArcGISEnvironment
+import com.arcgismaps.Color
+import com.arcgismaps.geometry.Point
+import com.arcgismaps.geometry.PolygonBuilder
+import com.arcgismaps.geometry.PolylineBuilder
+import com.arcgismaps.geometry.SpatialReference
 import com.arcgismaps.mapping.ArcGISMap
 import com.arcgismaps.mapping.BasemapStyle
 import com.arcgismaps.mapping.Viewpoint
+import com.arcgismaps.mapping.symbology.SimpleFillSymbol
+import com.arcgismaps.mapping.symbology.SimpleFillSymbolStyle
+import com.arcgismaps.mapping.symbology.SimpleLineSymbol
+import com.arcgismaps.mapping.symbology.SimpleLineSymbolStyle
+import com.arcgismaps.mapping.symbology.SimpleMarkerSymbol
+import com.arcgismaps.mapping.symbology.SimpleMarkerSymbolStyle
+import com.arcgismaps.mapping.view.Graphic
+import com.arcgismaps.mapping.view.GraphicsOverlay
 import com.arcgismaps.mapping.view.MapView
 import com.example.app.databinding.ActivityMainBinding
 
@@ -30,6 +43,8 @@ class MainActivity : AppCompatActivity() {
 
         setupMap()
 
+        addGraphics()
+
 
     }
 
@@ -40,7 +55,7 @@ class MainActivity : AppCompatActivity() {
         // set the map to be displayed in the layout's MapView
         mapView.map = map
 
-        mapView.setViewpoint(Viewpoint(34.0270, -118.8050, 72000.0))
+        mapView.setViewpoint(Viewpoint(1.293889, 103.793393, 72000.0))
 
     }
 
@@ -49,7 +64,32 @@ class MainActivity : AppCompatActivity() {
         // It is not best practice to store API keys in source code. We have you insert one here
         // to streamline this tutorial.
 
-        ArcGISEnvironment.apiKey = ApiKey.create("You_API_KEY")
+        ArcGISEnvironment.apiKey = ApiKey.create("YOUR_API_KEY")
+
+    }
+
+    private fun addGraphics() {
+
+        // create a graphics overlay and add it to the graphicsOverlays property of the map view
+        val graphicsOverlay = GraphicsOverlay()
+        mapView.graphicsOverlays.add(graphicsOverlay)
+
+        // create a point geometry with a location and spatial reference
+        // Point(latitude, longitude, spatial reference)
+        val point = Point(103.793393, 1.293889, SpatialReference.wgs84())
+
+        // create a point symbol that is an small red circle
+        val simpleMarkerSymbol = SimpleMarkerSymbol(SimpleMarkerSymbolStyle.Circle, Color.red, 10f)
+
+        // create a blue outline symbol and assign it to the outline property of the simple marker symbol
+        val blueOutlineSymbol = SimpleLineSymbol(SimpleLineSymbolStyle.Solid, Color.fromRgba(0, 0, 255), 2f)
+        simpleMarkerSymbol.outline = blueOutlineSymbol
+
+        // create a graphic with the point geometry and symbol
+        val pointGraphic = Graphic(point, simpleMarkerSymbol)
+
+        // add the point graphic to the graphics overlay
+        graphicsOverlay.graphics.add(pointGraphic)
 
     }
 
