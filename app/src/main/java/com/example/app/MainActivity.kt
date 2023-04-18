@@ -11,8 +11,6 @@ import com.arcgismaps.geometry.SpatialReference
 import com.arcgismaps.mapping.ArcGISMap
 import com.arcgismaps.mapping.BasemapStyle
 import com.arcgismaps.mapping.Viewpoint
-import com.arcgismaps.mapping.symbology.SimpleLineSymbol
-import com.arcgismaps.mapping.symbology.SimpleLineSymbolStyle
 import com.arcgismaps.mapping.symbology.SimpleMarkerSymbol
 import com.arcgismaps.mapping.symbology.SimpleMarkerSymbolStyle
 import com.arcgismaps.mapping.view.Graphic
@@ -20,7 +18,7 @@ import com.arcgismaps.mapping.view.GraphicsOverlay
 import com.arcgismaps.mapping.view.MapView
 import com.example.app.databinding.ActivityMainBinding
 import android.content.pm.PackageManager
-import kotlinx.android.synthetic.main.activity_main.*
+import android.util.Log
 import kotlinx.android.synthetic.main.zoom_control.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -51,17 +49,18 @@ class MainActivity : AppCompatActivity() {
 
     private fun setupMap() {
 
-        val map = ArcGISMap(BasemapStyle.ArcGISTopographic)
+        val map = ArcGISMap(BasemapStyle.ArcGISStreets)
 
         // set the map to be displayed in the layout's MapView
         mapView.map = map
 
-        mapView.setViewpoint(Viewpoint(1.293889, 103.793393, 72000.0))
+        mapView.setViewpoint(Viewpoint(1.293889, 103.793393, 4500.0))
 
         // Set up zoom control
         zoom_in_button.setOnClickListener {
             CoroutineScope(Dispatchers.Main).launch {
                 val currentScale = mapView.mapScale.value / 2
+                Log.d("scale", currentScale.toString())
                 mapView.setViewpointScale(currentScale)
             }
         }
