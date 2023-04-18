@@ -19,6 +19,9 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            <meta-data
+                android:name="ARC_GIS_API_KEY"
+                android:value="${ARC_GIS_API_KEY}" />
         </activity>
     </application>
 

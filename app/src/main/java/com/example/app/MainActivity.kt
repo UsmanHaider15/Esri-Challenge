@@ -23,7 +23,8 @@ import com.arcgismaps.mapping.view.Graphic
 import com.arcgismaps.mapping.view.GraphicsOverlay
 import com.arcgismaps.mapping.view.MapView
 import com.example.app.databinding.ActivityMainBinding
-
+import android.content.pm.PackageManager
+import android.util.Log
 
 class MainActivity : AppCompatActivity() {
 
@@ -64,7 +65,19 @@ class MainActivity : AppCompatActivity() {
         // It is not best practice to store API keys in source code. We have you insert one here
         // to streamline this tutorial.
 
-        ArcGISEnvironment.apiKey = ApiKey.create("YOUR_API_KEY")
+        try {
+            val activityInfo = packageManager.getActivityInfo(componentName, PackageManager.GET_META_DATA)
+            val metaData = activityInfo.metaData
+            val arcGisApiKey = metaData?.getString("ARC_GIS_API_KEY")
+            if (arcGisApiKey != null) {
+                ArcGISEnvironment.apiKey = ApiKey.create(arcGisApiKey)
+            }
+
+            // Use the metadata value as needed
+        } catch (e: PackageManager.NameNotFoundException) {
+            e.printStackTrace()
+        }
+
 
     }
 
